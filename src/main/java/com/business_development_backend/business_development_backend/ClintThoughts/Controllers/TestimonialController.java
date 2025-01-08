@@ -5,7 +5,9 @@ import com.business_development_backend.business_development_backend.ClintThough
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,7 +20,14 @@ public class TestimonialController {
 
     // Add a new testimonial
     @PostMapping("/add")
-    public ResponseEntity<Testimonial> addTestimonial(@RequestBody Testimonial testimonial) {
+    public ResponseEntity<Testimonial> addTestimonial(@RequestParam("image") MultipartFile image,
+                                                      @RequestParam("name") String name,
+                                                      @RequestParam("thought") String thought) throws IOException {
+        Testimonial testimonial = new Testimonial();
+        testimonial.setName(name);
+        testimonial.setThought(thought);
+        testimonial.setImage(image.getBytes());
+
         Testimonial savedTestimonial = testimonialService.saveTestimonial(testimonial);
         return ResponseEntity.ok(savedTestimonial);
     }

@@ -12,9 +12,10 @@ public class Testimonial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String clientImageUrl; // URL of the client's image
-    private String clientName;     // Name of the client
-    private String clientThought;  // Client's testimonial/thought
+    @Lob
+    private byte[] image; // URL of the client's image
+    private String name;     // Name of the client
+    private String thought;  // Client's testimonial/thought
 
     public Long getId() {
         return id;
@@ -24,27 +25,27 @@ public class Testimonial {
         this.id = id;
     }
 
-    public String getClientImageUrl() {
-        return clientImageUrl;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setClientImageUrl(String clientImageUrl) {
-        this.clientImageUrl = clientImageUrl;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getName() {
+        return name;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getClientThought() {
-        return clientThought;
+    public String getThought() {
+        return thought;
     }
 
-    public void setClientThought(String clientThought) {
-        this.clientThought = clientThought;
+    public void setThought(String thought) {
+        this.thought = thought;
     }
 }

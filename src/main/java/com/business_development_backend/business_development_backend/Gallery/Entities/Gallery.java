@@ -11,7 +11,10 @@ public class Gallery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageUrl;
+    @Lob
+    private byte[] image;
+
+    private String title;
 
     public Long getId() {
         return id;
@@ -21,11 +24,19 @@ public class Gallery {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

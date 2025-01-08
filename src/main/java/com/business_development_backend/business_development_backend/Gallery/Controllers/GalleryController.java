@@ -1,12 +1,12 @@
 package com.business_development_backend.business_development_backend.Gallery.Controllers;
 
-
 import com.business_development_backend.business_development_backend.Gallery.Entities.Gallery;
 import com.business_development_backend.business_development_backend.Gallery.Services.GalleryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,7 +19,12 @@ public class GalleryController {
 
     // Add an image to the gallery
     @PostMapping("/add")
-    public ResponseEntity<Gallery> addImage(@RequestBody Gallery gallery) {
+    public ResponseEntity<Gallery> addImage(@RequestParam("image") MultipartFile image,
+                                            @RequestParam("title") String title) throws IOException {
+        Gallery gallery = new Gallery();
+        gallery.setTitle(title);
+        gallery.setImage(image.getBytes());
+
         Gallery savedImage = galleryService.saveImage(gallery);
         return ResponseEntity.ok(savedImage);
     }

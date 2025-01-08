@@ -12,9 +12,10 @@ public class BoardMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String imageUrl; // URL of the board member's image
-    private String name;     // Name of the board member
-    private String position; // Position on the board
+    @Lob
+    private byte[] image;
+    private String name;
+    private String position;
     @Lob
     private String bio;      // Bio/Description
 
@@ -27,12 +28,12 @@ public class BoardMember {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public String getName() {

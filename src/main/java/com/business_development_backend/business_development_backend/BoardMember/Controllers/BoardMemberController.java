@@ -5,8 +5,11 @@ import com.business_development_backend.business_development_backend.BoardMember
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/board")
@@ -16,24 +19,33 @@ public class BoardMemberController {
     @Autowired
     private BoardMemberService boardMemberService;
 
-    // Add a board member
     @PostMapping("/add")
-    public ResponseEntity<BoardMember> addBoardMember(@RequestBody BoardMember boardMember) {
-        BoardMember savedBoardMember = boardMemberService.saveBoardMember(boardMember);
-        return ResponseEntity.ok(savedBoardMember);
+    public ResponseEntity<BoardMember> add(@RequestParam("image") MultipartFile image,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("position") String position,
+                                           @RequestParam("bio") String bio) throws IOException {
+
+        BoardMember boardMember = new BoardMember();
+        boardMember.setName(name);
+        boardMember.setPosition(position);
+        boardMember.setBio(bio);
+        boardMember.setImage(image.getBytes());
+
+        BoardMember saveBoardMEmber = boardMemberService.saveBoardMember(boardMember);
+
+        return ResponseEntity.ok(saveBoardMEmber);
     }
 
-    // Get all board members
     @GetMapping("/get-all")
-    public ResponseEntity<List<BoardMember>> getAllBoardMembers() {
+    public ResponseEntity<List<BoardMember>> getAll() {
         List<BoardMember> boardMembers = boardMemberService.getAllBoardMembers();
         return ResponseEntity.ok(boardMembers);
     }
 
-    // Delete a board member
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteBoardMember(@PathVariable Long id) {
+    public ResponseEntity<BoardMember> delete(@PathVariable Long id) {
         boardMemberService.deleteBoardMember(id);
-        return ResponseEntity.ok("Board member deleted successfully!");
+        return ResponseEntity.ok().build();
     }
+
 }

@@ -18,9 +18,18 @@ public class ContactDetailsController {
 
     @PostMapping("/save-contacts")
     public ResponseEntity<ContactDetails> setContactDetails(@RequestBody ContactDetails contactDetails) {
-        ContactDetails savedContactDetails = contactDetailsService.saveContact(contactDetails);
+        // Check if contact details already exist
+        List<ContactDetails> existingContactDetails = contactDetailsService.getAllContacts();
 
-        return ResponseEntity.ok(savedContactDetails);
+        if (existingContactDetails.isEmpty()) {
+            // No contact info exists, create a new one
+            ContactDetails savedContactDetails = contactDetailsService.saveContact(contactDetails);
+            return ResponseEntity.ok(savedContactDetails);
+        } else {
+            // Contact info exists, update the existing entry
+            ContactDetails updatedContactDetails = contactDetailsService.updateContactById(existingContactDetails.get(0).getId(), contactDetails);
+            return ResponseEntity.ok(updatedContactDetails);
+        }
     }
 
     @GetMapping("/get-contacts")

@@ -32,4 +32,25 @@ public class ContactDetailsController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
+        boolean isDeleted = contactDetailsService.deleteContactById(id);
+        if (isDeleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<ContactDetails> editContact(@PathVariable Long id, @RequestBody ContactDetails updatedContact) {
+        ContactDetails editedContact = contactDetailsService.updateContactById(id, updatedContact);
+        if (editedContact != null) {
+            return ResponseEntity.ok(editedContact);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

@@ -5,11 +5,14 @@ import com.business_development_backend.business_development_backend.Advertiseme
 import com.business_development_backend.business_development_backend.Advertisement.Services.AdvertisementService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/advertisements")
+@CrossOrigin
 public class AdvertisementController {
     private final AdvertisementService advertisementService;
 
@@ -17,22 +20,25 @@ public class AdvertisementController {
         this.advertisementService = advertisementService;
     }
 
-    // POST: Add Advertisement
-    @PostMapping
-    public ResponseEntity<Advertisement> addAdvertisement(@RequestBody Advertisement advertisement) {
+    @PostMapping("/save-ads")
+    public ResponseEntity<Advertisement> addAdvertisement(@RequestParam("title") String title,
+            @RequestParam("image") MultipartFile image) throws IOException {
+
+        Advertisement advertisement = new Advertisement();
+        advertisement.setTitle(title);
+        advertisement.setImage(image.getBytes());
+
         Advertisement savedAd = advertisementService.saveAdvertisement(advertisement);
         return ResponseEntity.ok(savedAd);
     }
 
-    // GET: Fetch all advertisements
-    @GetMapping
+    @GetMapping("/get-ads")
     public ResponseEntity<List<Advertisement>> getAllAdvertisements() {
         List<Advertisement> advertisements = advertisementService.getAllAdvertisements();
         return ResponseEntity.ok(advertisements);
     }
 
-    // DELETE: Delete advertisement by ID
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteAdvertisement(@PathVariable Long id) {
         advertisementService.deleteAdvertisement(id);
         return ResponseEntity.noContent().build();

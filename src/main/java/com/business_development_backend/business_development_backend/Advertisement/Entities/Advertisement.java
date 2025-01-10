@@ -15,7 +15,6 @@ public class Advertisement {
     private String title;
 
     @Lob
-    @Column(nullable = false)
     private byte[] image;
 
 

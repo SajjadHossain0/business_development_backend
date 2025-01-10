@@ -28,7 +28,7 @@ public class UserDataService {
     public String register(User user) {
         user.setEmail(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("ADMIN");
+        user.setRole("unknown");
         userRepository.save(user);
         return "User registered successfully";
     }

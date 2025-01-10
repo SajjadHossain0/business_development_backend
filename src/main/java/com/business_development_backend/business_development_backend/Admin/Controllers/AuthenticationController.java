@@ -39,6 +39,10 @@ public class AuthenticationController {
             User user = userDataService.getUserByEmail(loginRequest.getEmail())
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
+            if (!user.getRole().equals("ADMIN")) {
+                return ResponseEntity.status(403).body(Map.of("message", "Access denied: Only admins can log in."));
+            }
+
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             response.put("userId", String.valueOf(user.getId())); // add userId to response
